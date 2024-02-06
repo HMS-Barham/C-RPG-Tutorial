@@ -3,8 +3,8 @@
 int main()
 {
     //These numbers are wrong. Update later.
-    int windowX = 500;
-    int windowY = 400;
+    int windowX = 800;
+    int windowY = 600;
 
     InitWindow(windowX, windowY, "RPG");
 
