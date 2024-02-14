@@ -16,10 +16,21 @@ int main()
     Vector2 mapPos {0.0, 0.0};
 
     Texture2D knight = LoadTexture("characters/knight_idle_spritesheet.png");
+    Texture2D knightIdle = LoadTexture("characters/knight_idle_spritesheet.png");
+    Texture2D knightRun = LoadTexture("characters/knight_run_spritesheet.png");
     Vector2 knightPos {(float)windowX/2.0f - 4.0f * (0.5f * (float)knight.width/6), (float)windowY/2.0f - 4.0f * (0.5f * (float)knight.height)};
+    // 1 = facing right, -1 = facing left
+    float rightLeft{1.f};
+    //animation variables
+    float runningTime {};
+    int frame {};
+    const int maxFrames {6};
+    const float updateTime {1.f/12.f};
 
     while (WindowShouldClose() == false)
     {
+        const float dT{GetFrameTime()};
+
         BeginDrawing();
         ClearBackground(WHITE);
 
@@ -33,15 +44,31 @@ int main()
         if(Vector2Length(direction) != 0.0)
         {
             //Subtracts vectors so that the map moves in the right direction
-            //Also scales the vector by moeSpeed so that I have some control of the movement speed
+            //Also scales the vector by moveSpeed so that I have some control of the movement speed
             mapPos = Vector2Subtract(mapPos, Vector2Scale(Vector2Normalize(direction), moveSpeed));
+            //ternary statement. Equivalent to an if/else statement
+            direction.x < 0.f ? rightLeft = - 1.f : rightLeft = 1.f;
+            knight = knightRun;
         }
+        else knight = knightIdle;
 
         //draw map
         DrawTextureEx(map, mapPos, 0.0, 4.0, WHITE);
 
+        //update animation frame
+        runningTime += dT;
+        if(runningTime >= updateTime)
+        {
+            frame++;
+            runningTime = 0.f;
+            if(frame > maxFrames)
+            {
+                frame = 0;
+            }
+        }
+
         //draw knight
-        Rectangle source {0.0f, 0.0f, (float)knight.width/6.0f, (float)knight.height};
+        Rectangle source {frame * (float)knight.width/6.0f, 0.0f, rightLeft * (float)knight.width/6.0f, (float)knight.height};
         Rectangle dest {knightPos.x, knightPos.y, 4.0f * ((float)knight.width/6.0f), 4.0f * (float)knight.height};
         DrawTexturePro(knight, source, dest, Vector2{}, 0.0f, WHITE);
 
@@ -50,6 +77,7 @@ int main()
 
 
     UnloadTexture(map);
+    UnloadTexture(knight);
     CloseWindow();
 
 }
