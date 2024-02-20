@@ -14,8 +14,7 @@ int main()
     Texture2D map = LoadTexture("nature_tileset/worldMap.png");
     Vector2 mapPos{0.0, 0.0};
     const float mapScale{4.0};
-    Character knight;
-    knight.setScreenPos(windowX, windowY);
+    Character knight {windowX, windowY};
 
     while (WindowShouldClose() == false)
     {
