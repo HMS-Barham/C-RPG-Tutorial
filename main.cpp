@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "Character.h"
+#include "Prop.h"
 
 int main()
 {
@@ -15,6 +16,7 @@ int main()
     Vector2 mapPos{0.0, 0.0};
     const float mapScale{4.0};
     Character knight {windowX, windowY};
+    Prop rock {Vector2{0.0f, 0.0f}, LoadTexture("nature_tileset/Rock.png")};
 
     while (WindowShouldClose() == false)
     {
@@ -25,6 +27,7 @@ int main()
 
         //draw map
         DrawTextureEx(map, mapPos, 0.0, mapScale, WHITE);
+        rock.Render(knight.getWorldPos());
 
         //draw player character
         knight.tick(GetFrameTime());
@@ -36,6 +39,8 @@ int main()
             {
                 knight.undoMovement();
             }
+
+        
 
         EndDrawing();
     }
