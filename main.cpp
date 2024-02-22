@@ -16,7 +16,12 @@ int main()
     Vector2 mapPos{0.0, 0.0};
     const float mapScale{4.0};
     Character knight {windowX, windowY};
-    Prop rock {Vector2{0.0f, 0.0f}, LoadTexture("nature_tileset/Rock.png")};
+    
+
+    Prop props[2]{
+        Prop {Vector2{600.0f, 300.0f}, LoadTexture("nature_tileset/Rock.png")},
+        Prop {Vector2{400.0f, 500.0f}, LoadTexture("nature_tileset/Log.png")},
+    };
 
     while (WindowShouldClose() == false)
     {
@@ -27,7 +32,12 @@ int main()
 
         //draw map
         DrawTextureEx(map, mapPos, 0.0, mapScale, WHITE);
-        rock.Render(knight.getWorldPos());
+
+        //Draw the props
+        for (auto prop : props)
+        {
+            prop.Render(knight.getWorldPos());
+        }
 
         //draw player character
         knight.tick(GetFrameTime());
@@ -39,6 +49,16 @@ int main()
             {
                 knight.undoMovement();
             }
+
+        //Check to see if Character collides with Props. Undoes movement if true.
+        for (auto prop : props)
+        {
+            if(CheckCollisionRecs(prop.getCollisionRec(knight.getWorldPos()), knight.getCollisionRec()))
+            {
+                knight.undoMovement();
+            }
+        }
+        
 
         
 
