@@ -1,9 +1,9 @@
 #include "raylib.h"
 
-class Character
+class Enemy
 {
 public:
-    Character(int windowWidth, int windowHeight);
+    Enemy(Vector2 pos, Texture2D idle_texture, Texture2D run_texture);
     Vector2 getWorldPos() {return worldPos;}
     void tick(float deltaTime);
     void undoMovement();
