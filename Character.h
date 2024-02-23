@@ -1,6 +1,7 @@
 #include "raylib.h"
+#include "BaseCharacter.h"
 
-class Character
+class Character : public BaseCharacter
 {
 public:
     Character(int windowWidth, int windowHeight);
