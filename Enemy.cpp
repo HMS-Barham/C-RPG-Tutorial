@@ -14,3 +14,4 @@ void Enemy::tick(float deltaTime)
 {
     BaseCharacter::tick(deltaTime);
 }
+
