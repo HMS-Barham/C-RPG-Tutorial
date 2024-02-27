@@ -10,6 +10,7 @@ public:
     void undoMovement();
     Rectangle getCollisionRec();
     virtual void tick(float deltaTime);
+    virtual Vector2 getScreenPos() = 0;
 
 protected:
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
@@ -18,6 +19,7 @@ protected:
     Vector2 screenPos{};
     Vector2 worldPos{};
     Vector2 worldPosLastFrame{};
+    Vector2 velocity{};
     float width{};
     float height{};
     // 1 = facing right, -1 = facing left

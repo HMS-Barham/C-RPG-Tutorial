@@ -1,4 +1,5 @@
 #include "BaseCharacter.h"
+#include "raymath.h"
 
 BaseCharacter::BaseCharacter()
 {
@@ -15,7 +16,7 @@ void BaseCharacter::undoMovement()
 
 Rectangle BaseCharacter::getCollisionRec()
 {
-    return Rectangle {screenPos.x, screenPos.y, scale * width, scale * height};
+    return Rectangle {getScreenPos().x, getScreenPos().y, scale * width, scale * height};
 }
 
 void BaseCharacter::tick(float deltaTime)
@@ -35,8 +36,24 @@ void BaseCharacter::tick(float deltaTime)
         }
     }
 
+    if (Vector2Length(velocity) != 0.0)
+    {
+        // Adds vectors so that the map moves in the right direction
+        // Also scales the vector by moveSpeed so that I have some control of the movement speed
+        worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(velocity), speed));
+        // ternary statement. Equivalent to an if/else statement
+        velocity.x < 0.f ? rightLeft = -1.f : rightLeft = 1.f;
+        texture = run;
+    }
+    else
+    {
+        texture = idle;
+    }
+
+    velocity = {};
+
     // draw enemy
     Rectangle source{frame * width, 0.0f, rightLeft * width, height};
-    Rectangle dest{screenPos.x, screenPos.y, scale * width, scale * height};
+    Rectangle dest{getScreenPos().x, getScreenPos().y, scale * width, scale * height};
     DrawTexturePro(texture, source, dest, Vector2{}, 0.0f, WHITE);
 }
