@@ -11,6 +11,8 @@ public:
     Rectangle getCollisionRec();
     virtual void tick(float deltaTime);
     virtual Vector2 getScreenPos() = 0;
+    bool getAlive() { return alive; }
+    bool setAlive(bool isAlive) { alive = isAlive; }
 
 protected:
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
@@ -33,6 +35,7 @@ protected:
     float scale {4.0f};
 
 private:
+    bool alive {true};
 
 };
 
